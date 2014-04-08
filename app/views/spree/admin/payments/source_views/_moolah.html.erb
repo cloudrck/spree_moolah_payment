@@ -1,0 +1,21 @@
+<fieldset data-hook="moolah">
+  <legend align="center"><%= Spree.t(:transaction, :scope => :moolah) %></legend>
+
+  <div class="row">
+    <div class="alpha six columns">
+      <dl>
+        <dt><%= Spree.t(:moolah_id, :scope => :moolah) %>:</dt>
+        <dd><%= payment.source.moolah_id %></dd>
+
+        <dt><%= Spree.t(:status, :scope => :moolah) %>:</dt>
+        <dd><%= payment.source.status %></dd>
+
+        <dt><%= Spree.t(:btc_cents, :scope => :moolah) %>:</dt>
+        <dd><%= payment.source.btc_cents %></dd>
+
+        <dt><%= Spree.t(:receive_address, :scope => :moolah) %>:</dt>
+        <dd><%= payment.source.receive_address %></dd>
+      </dl>
+    </div>
+  </div>
+</fieldset>

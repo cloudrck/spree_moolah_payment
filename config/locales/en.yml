@@ -1,0 +1,13 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  spree:
+    coinbase:
+      button:
+        name: "Your %{site_name} order %{order_number}"
+      transaction: Coinbase Transaction
+      coinbase_id: Coinbase order ID
+      status: Status
+      btc_cents: BTC cents
+      receive_address: Receiving address

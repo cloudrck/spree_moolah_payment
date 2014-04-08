@@ -1,0 +1,39 @@
+.connect_moolah {
+
+}
+
+.connect_moolah p {
+
+}
+
+.connect_moolah .row {
+
+}
+
+.connect_moolah .row label {
+  display: block;
+}
+
+.connect_moolah .button_wrapper {
+  text-align: center;
+}
+
+#moolah_button {
+  margin: 0 auto;
+  width: 180px;
+  height: 34px;
+  display: inline-block;
+  background: url(connect-moolah.png) no-repeat 0 0;
+  text-indent: -9999px;
+  -webkit-transition-duration: 0;
+  -moz-transition-duration: 0;
+  transition-duration: 0;
+}
+
+#moolah_button:hover {
+  background-position: 0 -34px;
+}
+
+#moolah_button:active {
+  background-position: 0 -68px;
+}
