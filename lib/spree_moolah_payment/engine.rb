@@ -1,7 +1,7 @@
 module SpreeMoolahPayment
   class Engine < Rails::Engine
-    require 'spree/core'
-    isolate_namespace Spree
+    #require 'spree/core'
+    #isolate_namespace Spree
     engine_name 'spree_moolah_payment'
 
     config.autoload_paths += %W(#{config.root}/lib)
