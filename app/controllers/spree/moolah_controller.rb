@@ -12,21 +12,21 @@ module Spree
         #button_name = Spree.t("button.name", :scope => :moolah, :site_name => Spree::Config.site_name, :order_number => order.number)
        case cypto_curr
               when "BTC"
-              	  coin = ENV["btc"]
+              	  coin = payment_method.preferred_btc_guid
               when "LTC"
-              	  coin = ENV["ltc"]
+              	  coin = payment_method.preferred_ltc_guid
               when "DOGE"
-              	  coin = ENV["doge"]
+              	  coin = payment_method.preferred_doge_guid
               when "VTC"
-              	  coin = ENV["vtc"]
+              	  coin = payment_method.preferred_vtc_guid
               when "AUR"
-              	  coin = ENV["aur"]
+              	  coin = payment_method.preferred_aur_guid
               when "DRK"
-              	  coin = ENV["drk"]
+              	  coin = payment_method.preferred_drk_guid
               when "MAX"
-              	  coin = ENV["max"]
+              	  coin = payment_method.preferred_max_guid
               when "MINT"
-              	  coin = ENV["mint"]
+              	  coin = payment_method.preferred_mint_guid
             end
             #Generate API Request for Moolah Payment URL
             moolah_options = { :query => {
@@ -42,13 +42,13 @@ module Spree
         
         	# ## Add a "processing" payment that is used to verify the callback
         	payment = order.payments.create({:amount => order.total,
-        									:state => "processing",
         			:source => Spree::MoolahCheckout.create({
 							:order_id => order.number,
+							:status => "processing",
 							:transaction_id => response['tx']
 					}),
         			:payment_method => payment_method })
-        	#payment.started_processing!
+        	payment.started_processing!
         	###
         redirect_to "https://moolah.io/api/tx/#{response['tx']}"
         #redirect_to "#{response}"
@@ -61,9 +61,10 @@ module Spree
     end
 
     def success
+    	order = current_order
       flash.notice = Spree.t(:order_processed_successfully)
       flash[:commerce_tracking] = "nothing special"
-      redirect_to order_path(params[:order][:custom], :moolah_id => params[:order][:id])
+      redirect_to order_path(order, :token => order.token)
     end
 
     def callback
