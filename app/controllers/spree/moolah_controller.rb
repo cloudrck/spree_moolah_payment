@@ -82,6 +82,7 @@ module Spree
     		case params[:status]
     		when "complete"
     			callback_success(order)
+    			render text: "Callback successful"
     		end
     		# TODO: handle mispaid amount
 
