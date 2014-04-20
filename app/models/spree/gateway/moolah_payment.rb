@@ -32,7 +32,7 @@ module Spree
 
     def provider
         #::Moolah::Client::api_key = @api_key
-        provider_class.new('')
+        provider_class.new
     end
 
     def auto_capture?
