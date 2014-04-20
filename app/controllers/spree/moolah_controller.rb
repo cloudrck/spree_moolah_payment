@@ -74,9 +74,9 @@ module Spree
     	if params[:ipn_secret] ==ENV["ipn"]
     		tx_number = params[:tx]
     		tx = Spree::MoolahCheckout.find_by(:transaction_id => tx_number)
+    		order= Order.find_by(:number => tx.order_id)
     		payments = order.payments.where(:state => "processing",
                                       :payment_method_id => payment_method)
-    		order= Order.find_by(:number => tx.order_id)
 
     		raise "Callback rejected: unrecognized order" unless order
 
