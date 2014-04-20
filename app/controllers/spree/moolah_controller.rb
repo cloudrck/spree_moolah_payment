@@ -28,20 +28,30 @@ module Spree
               when "MINT"
               	  coin = ENV["mint"]
             end
-
+            #Generate API Request for Moolah Payment URL
             moolah_options = { :query => {
             :guid => coin,
-            :currency => "USD",
+            :currency => order.currency,
             :amount => order.total,
             :product => "Order No #{order.number}", #order id
-            :return=> moolah_success_url
-            
+            :return=> moolah_success_url,
+            :ipn=> moolah_callback_url       
           }}
 
         response = moolah.generate_url_payment(moolah_options) #Execute
         
+        	# ## Add a "processing" payment that is used to verify the callback
+        	payment = order.payments.create({:amount => order.total,
+        			:source => Spree::MoolahCheckout.create({
+							:order_id => order.number,
+							:transaction_id => response['tx']
+					}),
+        			:payment_method => payment_method })
+        	payment.started_processing!
+        	###
         #redirect_to "#{response['url']}"
         redirect_to "#{response}"
+        #For Production use
       #rescue => e
         #Rails.logger.error e
         # Redirect back to checkout so buyer can choose alternative payment method
@@ -56,18 +66,25 @@ module Spree
     end
 
     def callback
-      order_number = params[:order][:custom]
-      order = Order.find_by(:number => order_number)
+    	#ToDo: Verify callback via MoolahIPN
+    	# Since Moolah doesn't return any extra params, we have to relate the 'transactionID' to a customer 'order_id'
+    	#
+    	if params[:ipn_secret] ==ENV["ipn"]
+    		tx_number = params[:tx]
+    		tx = Spree::MoolahCheckout.find_by(:transaction_id => tx_number)
+      
+    		order= Order.find_by(:number => tx.order_id)
 
-      raise "Callback rejected: unrecognized order" unless order
+    		raise "Callback rejected: unrecognized order" unless order
 
-      case params[:order][:status]
-      when "completed"
-        callback_success(order)
-      end
-      # TODO: handle mispaid amount
+    		case params[:status]
+    		when "complete"
+    			callback_success(order)
+    		end
+    		# TODO: handle mispaid amount
 
-      render :text => ""
+    		render :text => ""
+    	end
     end
 
 	private
@@ -83,10 +100,8 @@ module Spree
 		def callback_success(order)
 			order.payments.create!({
 					:source => Spree::MoolahCheckout.create({
-							:moolah_id => params[:order][:id],
-							:status => params[:order][:status],
-							:btc_cents => params[:order][:total_btc][:cents],
-							:receive_address => params[:order][:receive_address]
+							:status => params[:status],
+							:transaction_id => params[:tx]
 					}),
 					:amount => order.total,
 					:payment_method => payment_method
