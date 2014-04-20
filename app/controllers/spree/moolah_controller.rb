@@ -88,6 +88,7 @@ module Spree
 
     		render :text => ""
     	end
+    	render :text => ""
     end
 
 	private
