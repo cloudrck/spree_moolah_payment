@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'spree_core', '~> 2.2'
   s.add_dependency 'json', '~> 1.8'
-  s.add_dependency 'moolah-ruby', '~> 1.0.0'
+  s.add_dependency 'moolah-ruby', '~> 0.0.5'
 
   s.add_development_dependency 'capybara', '~> 2.1'
   s.add_development_dependency 'coffee-rails'
