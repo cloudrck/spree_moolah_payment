@@ -42,15 +42,16 @@ module Spree
         
         	# ## Add a "processing" payment that is used to verify the callback
         	payment = order.payments.create({:amount => order.total,
+        									:state => "processing",
         			:source => Spree::MoolahCheckout.create({
 							:order_id => order.number,
 							:transaction_id => response['tx']
 					}),
         			:payment_method => payment_method })
-        	payment.started_processing!
+        	#payment.started_processing!
         	###
-        #redirect_to "#{response['url']}"
-        redirect_to "#{response}"
+        redirect_to "https://moolah.io/api/tx/#{response['tx']}"
+        #redirect_to "#{response}"
         #For Production use
       #rescue => e
         #Rails.logger.error e
