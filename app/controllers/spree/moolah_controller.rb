@@ -84,14 +84,11 @@ module Spree
 
     	case params[:status]
     	when "complete"
-    		payments.each do |p|
-    			payment = p
-    		end
-    		payment.pend!
+    		 payments.next
     		#callback_success(order)
     		render text: "Callback successful"
-    		payment.complete!
-    		order.update!
+    		#payment.complete
+    		#order.update!
     	end
     	# TODO: handle mispaid amount
 
