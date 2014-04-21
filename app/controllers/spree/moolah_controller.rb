@@ -95,7 +95,7 @@ module Spree
     	end
     	# TODO: handle mispaid amount
 
-    	render :text => ""
+    	#render :text => ""
 
     end
 
