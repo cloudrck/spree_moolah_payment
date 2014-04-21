@@ -87,14 +87,14 @@ module Spree
     		when "complete"
     			payment.pend!
     			#callback_success(order)
-    			render text: "Callback successful"
+    			render :text => "Callback successful"
     			payment.complete!
     			order.update!
     		end
     	end
     	# TODO: handle mispaid amount
 
-    	#render :text => ""
+    	render :text => ""
 
     end
 
