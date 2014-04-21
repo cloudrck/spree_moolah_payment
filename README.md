@@ -4,7 +4,7 @@ This is an unofficial Spree Commerce [Moolah](https://moolah.io) extension.
 
 Behind-the-scenes, this extension uses my [Moolah Ruby SDK](https://github.com/cloudrck/moolah-ruby).
 
-##
+## ToDo
 1. Handle Success Page
 2. Handle underpayed balance
 
