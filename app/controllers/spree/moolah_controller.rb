@@ -88,6 +88,7 @@ module Spree
     		payments.each do |p|
     			payment = p
     		end
+    		payment.pend!
     		#callback_success(order)
     		render text: "Callback successful"
     		payment.complete!
