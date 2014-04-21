@@ -77,7 +77,7 @@ module Spree
     	end
    	tx_number = params[:tx]
     	tx = Spree::MoolahCheckout.find_by(:transaction_id => tx_number)
-    	order= Order.find_by(:number => tx.order_id)
+    	order= Spree::Order.find(tx.order_id)
     	payments = order.payments.where(:state => "processing",
                                      :payment_method_id => payment_method)
     	raise "Callback rejected: unrecognized order" unless order
