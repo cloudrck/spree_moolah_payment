@@ -1,6 +1,6 @@
 module Spree
 	class Gateway::MoolahPayment < Gateway
-=begin    
+
 		preference :btc_guid, :string
 		preference :ltc_guid, :string
 		preference :doge_guid, :string
@@ -10,7 +10,7 @@ module Spree
 		preference :max_guid, :string
 		preference :mint_guid, :string
 		preference :ipn_secret, :string
-
+=begin
 	Future Code
    @@api_key = nil
 
@@ -32,7 +32,7 @@ module Spree
 
     def provider
         #::Moolah::Client::api_key = @api_key
-        provider_class.new('')
+        provider_class.new
     end
 
     def auto_capture?
