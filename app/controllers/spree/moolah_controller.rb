@@ -81,17 +81,17 @@ module Spree
     	payments = order.payments.where(:state => "processing",
                                      :payment_method_id => tx.id)
     	raise "Callback rejected: unrecognized order" unless order
-    	payments.each do |p|
-    		payment = p
+    	#payments.each do |p|
+    		#payment = p
     		case params[:status]
     		when "complete"
-    			payment.pend!
+    			payments.pend!
     			#callback_success(order)
     			render :text => "Callback successful"
-    			payment.complete!
+    			payments.complete!
     			order.update!
     		end
-    	end
+    	#end
     	# TODO: handle mispaid amount
 
     	render :text => ""
