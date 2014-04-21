@@ -78,19 +78,17 @@ module Spree
    	tx_number = params[:tx]
     	tx = Spree::MoolahCheckout.find_by(:transaction_id => tx_number)
     	order= Order.find_by(:number => tx.order_id)
-    	payments = order.payments.where(:state => "processing",
+    	@payment = order.payments.where(:state => "processing",
                                      :payment_method_id => tx.id)
     	raise "Callback rejected: unrecognized order" unless order
     		case params[:status]
     		when "complete"
-    			payments.each do |payment|
-    				payment.pend!
-    				#order.next
-    				#callback_success(order)
-    				render :text => "Callback successful"
-    				payment.complete!
-    				order.update!
-    			end
+    			@payment.pend!
+    			order.next
+    			#callback_success(order)
+    			render :text => "Callback successful"
+    			@payment.complete!
+    			order.update!
     		end
     	# TODO: handle mispaid amount
 
