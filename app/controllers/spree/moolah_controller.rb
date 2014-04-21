@@ -71,27 +71,32 @@ module Spree
     	#ToDo: Verify callback via MoolahIPN
     	# Since Moolah doesn't return any extra params, we have to relate the 'transactionID' to a customer 'order_id'
     	#
-    	if params[:ipn_secret] ==ENV["ipn"]
-    		tx_number = params[:tx]
-    		tx = Spree::MoolahCheckout.find_by(:transaction_id => tx_number)
-    		order= Order.find_by(:number => tx.order_id)
-    		payment = order.payments.where(:state => "processing",
-                                      :payment_method_id => payment_method)
-
-    		raise "Callback rejected: unrecognized order" unless order
-
-    		case params[:status]
-    		when "complete"
-    			callback_success(order)
-    			render text: "Callback successful"
-    			payment.complete!
-    			order.update!
-    		end
-    		# TODO: handle mispaid amount
-
-    		render :text => ""
+    	if ENV["ipn"] != params[:ipn_secret]
+    		render text: "Invalid secret token", status: 400
+    		return
     	end
+   	tx_number = params[:tx]
+    	tx = Spree::MoolahCheckout.find_by(:transaction_id => tx_number)
+    	order= Order.find_by(:number => tx.order_id)
+    	payments = order.payments.where(:state => "processing",
+                                     :payment_method_id => payment_method)
+    	raise "Callback rejected: unrecognized order" unless order
+
+    	case params[:status]
+    	when "complete"
+    		payment = nil
+    		payments.each do |p|
+    			payment = p
+    		end
+    		#callback_success(order)
+    		render text: "Callback successful"
+    		payment.complete!
+    		order.update!
+    	end
+    	# TODO: handle mispaid amount
+
     	render :text => ""
+
     end
 
 	private
@@ -105,6 +110,7 @@ module Spree
 		end
 
 		def callback_success(order)
+			
 			order.payments.create!({
 					:source => Spree::MoolahCheckout.create({
 							:status => params[:status],
