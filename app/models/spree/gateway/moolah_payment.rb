@@ -9,7 +9,7 @@ module Spree
 		preference :drk_guid, :string
 		preference :max_guid, :string
 		preference :mint_guid, :string
-		preference :ipn_secret, :string
+		preference :qrk_guid, :string
 =begin
 	Future Code
    @@api_key = nil
