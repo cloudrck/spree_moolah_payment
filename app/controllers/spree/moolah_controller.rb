@@ -62,11 +62,9 @@ module Spree
         end
 
     def success
-    order = current_order
-      flash[:commerce_tracking] = "nothing special"
-      flash.notice = Spree.t(:order_processed_successfully)
-        #redirect_to order_path(order, :token => order.token)
-        redirect_to spree.order_path(order), :notice => Spree.t(:order_processed_successfully)
+    	order = current_order
+     	flash[:commerce_tracking] = "nothing special"
+     	redirect_to spree.order_path(order), :notice => Spree.t(:order_processed_successfully)
     end
 
     def callback
