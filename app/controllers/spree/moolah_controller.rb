@@ -66,7 +66,7 @@ module Spree
       flash[:commerce_tracking] = "nothing special"
       flash.notice = Spree.t(:order_processed_successfully)
         #redirect_to order_path(order, :token => order.token)
-        redirect_to "http://dev2.cloudrck.net:3000/orders/#{order.number}"
+        redirect_to spree.order_path(order), :notice => Spree.t(:order_processed_successfully)
     end
 
     def callback
