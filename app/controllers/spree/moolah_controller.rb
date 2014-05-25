@@ -52,7 +52,6 @@ module Spree
         		payment.started_processing!
         	###########
         	redirect_to "https://moolah.io/api/tx/#{response['tx']}"
-        	#redirect_to "#{response}"
         	#For Production use
         	#rescue => e
         	#Rails.logger.error e
@@ -68,10 +67,9 @@ module Spree
     end
 
     def callback
-    	#ToDo: Verify callback via MoolahIPN
     	# Since Moolah doesn't return any extra params, we have to relate the 'transactionID' to a customer 'order_id'
     	#
-    	if ENV["ipn"] != params[:ipn_secret]
+    	if Spree::MoolahPayment::Config[:ipn] != params[:ipn_secret]
     		render text: "Invalid secret token", status: 400
     		return
     	end

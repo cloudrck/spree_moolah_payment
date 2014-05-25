@@ -2,6 +2,11 @@ module SpreeMoolahPayment
   module Generators
     class InstallGenerator < Rails::Generators::Base
       class_option :auto_run_migrations, :type => :boolean, :default => false
+      source_root File.expand_path('../../../templates/', __FILE__)
+
+      def copy_initializer_file
+        copy_file 'spree_moolah_payment.rb', "config/initializers/spree_moolah_payment.rb"
+      end
 
       def add_migrations
         run 'rake railties:install:migrations FROM=spree_moolah_payment'
